@@ -6,15 +6,16 @@ DatabaseConf:
   Host: 127.0.0.1
   Port: 3306
   DBName: simple_admin
-  Username: # set your username
-  Password: # set your password
+  Username: root
+  Password: 5bc5ef915ed146de960379db620fc46a@YOOZOO
   MaxOpenConn: 100
   SSLMode: disable
   CacheTime: 5
 
 RedisConf:
-  Host: 127.0.0.1:6379
+  Host: 127.0.0.1:6378
   Type: node
+  Pass: nYhjtZ2vri6KDl7Z
 
 Log:
   ServiceName: loadRpcLogger

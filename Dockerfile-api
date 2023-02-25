@@ -18,5 +18,5 @@ WORKDIR /home
 COPY --from=builder /home/api/load_api ./
 COPY --from=builder /home/api/etc/load.yaml ./
 
-EXPOSE 9100
+EXPOSE 8081
 ENTRYPOINT ./load_api -f load.yaml

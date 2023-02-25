@@ -7,6 +7,7 @@ import (
 	"context"
 
 	"github.com/vwenkk/load/rpc/internal/logic/base"
+	"github.com/vwenkk/load/rpc/internal/logic/group"
 	"github.com/vwenkk/load/rpc/internal/svc"
 	"github.com/vwenkk/load/rpc/types/load"
 )
@@ -25,4 +26,30 @@ func NewLoadServer(svcCtx *svc.ServiceContext) *LoadServer {
 func (s *LoadServer) InitDatabase(ctx context.Context, in *load.Empty) (*load.BaseResp, error) {
 	l := base.NewInitDatabaseLogic(ctx, s.svcCtx)
 	return l.InitDatabase(in)
+}
+
+// Group management
+func (s *LoadServer) CreateGroup(ctx context.Context, in *load.GroupInfo) (*load.BaseIDResp, error) {
+	l := group.NewCreateGroupLogic(ctx, s.svcCtx)
+	return l.CreateGroup(in)
+}
+
+func (s *LoadServer) UpdateGroup(ctx context.Context, in *load.GroupInfo) (*load.BaseResp, error) {
+	l := group.NewUpdateGroupLogic(ctx, s.svcCtx)
+	return l.UpdateGroup(in)
+}
+
+func (s *LoadServer) GetGroupList(ctx context.Context, in *load.GroupListReq) (*load.GroupListResp, error) {
+	l := group.NewGetGroupListLogic(ctx, s.svcCtx)
+	return l.GetGroupList(in)
+}
+
+func (s *LoadServer) GetGroupById(ctx context.Context, in *load.IDReq) (*load.GroupInfo, error) {
+	l := group.NewGetGroupByIdLogic(ctx, s.svcCtx)
+	return l.GetGroupById(in)
+}
+
+func (s *LoadServer) DeleteGroup(ctx context.Context, in *load.IDsReq) (*load.BaseResp, error) {
+	l := group.NewDeleteGroupLogic(ctx, s.svcCtx)
+	return l.DeleteGroup(in)
 }

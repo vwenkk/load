@@ -6,8 +6,7 @@ import (
 	"entgo.io/ent/schema"
 	"entgo.io/ent/schema/field"
 	"entgo.io/ent/schema/index"
-
-	"github.com/suyuan32/simple-admin-core/pkg/ent/schema/mixins"
+	"github.com/vwenkk/load/pkg/ent/schema/mixins"
 )
 
 type Group struct {

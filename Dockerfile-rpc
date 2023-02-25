@@ -20,5 +20,5 @@ WORKDIR /home
 COPY --from=builder /home/rpc/load_rpc ./
 COPY --from=builder /home/rpc/etc/load.yaml ./
 
-EXPOSE 9101
+EXPOSE 8080
 ENTRYPOINT ./load_rpc -f core.yaml

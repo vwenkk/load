@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	base "github.com/vwenkk/load/api/internal/handler/base"
+	group "github.com/vwenkk/load/api/internal/handler/group"
 	"github.com/vwenkk/load/api/internal/svc"
 
 	"github.com/zeromicro/go-zero/rest"
@@ -19,5 +20,39 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Handler: base.InitDatabaseHandler(serverCtx),
 			},
 		},
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.Authority},
+			[]rest.Route{
+				{
+					Method:  http.MethodPost,
+					Path:    "/group/create",
+					Handler: group.CreateGroupHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/group/update",
+					Handler: group.UpdateGroupHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/group/delete",
+					Handler: group.DeleteGroupHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/group/list",
+					Handler: group.GetGroupListHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/group",
+					Handler: group.GetGroupByIdHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
 	)
 }

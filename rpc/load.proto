@@ -3,8 +3,24 @@ syntax = "proto3";
 package load;
 option go_package="./load";
 
-message IDReq {
-  uint64 id = 1;
+message UUIDReq {
+  string id = 1;
+}
+
+message GroupListResp {
+  uint64 total = 1;
+  repeated GroupInfo data = 2;
+}
+
+//  base message
+message Empty {}
+
+message IDsReq {
+  repeated uint64 ids = 1;
+}
+
+message BaseResp {
+  string msg = 1;
 }
 
 message PageInfoReq {
@@ -17,32 +33,48 @@ message BaseIDResp {
   string msg = 2;
 }
 
-//  base message
-message Empty {}
-
-message UUIDsReq {
-  repeated string ids = 1;
-}
-
-message UUIDReq {
-  string id = 1;
-}
-
-message BaseResp {
-  string msg = 1;
-}
-
 message BaseUUIDResp {
   string id = 1;
   string msg = 2;
 }
 
-message IDsReq {
-  repeated uint64 ids = 1;
+message GroupInfo {
+  uint64 id = 1;
+  int64 created_at = 2;
+  int64 updated_at = 3;
+  uint32 status = 4;
+  string name = 5;
+  string remark = 6;
+}
+
+message GroupListReq {
+  uint64 page = 1;
+  uint64 page_size = 2;
+  string name = 3;
+  string remark = 4;
+}
+
+message IDReq {
+  uint64 id = 1;
+}
+
+message UUIDsReq {
+  repeated string ids = 1;
 }
 
 service Load {
   //  group: base
   rpc initDatabase(Empty) returns (BaseResp);
+  //  Group management
+  //  group: group
+  rpc createGroup(GroupInfo) returns (BaseIDResp);
+  //  group: group
+  rpc updateGroup(GroupInfo) returns (BaseResp);
+  //  group: group
+  rpc getGroupList(GroupListReq) returns (GroupListResp);
+  //  group: group
+  rpc getGroupById(IDReq) returns (GroupInfo);
+  //  group: group
+  rpc deleteGroup(IDsReq) returns (BaseResp);
 }
 

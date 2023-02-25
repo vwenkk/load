@@ -20,6 +20,17 @@ const _ = grpc.SupportPackageIsVersion7
 type LoadClient interface {
 	//  group: base
 	InitDatabase(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*BaseResp, error)
+	//  Group management
+	//  group: group
+	CreateGroup(ctx context.Context, in *GroupInfo, opts ...grpc.CallOption) (*BaseIDResp, error)
+	//  group: group
+	UpdateGroup(ctx context.Context, in *GroupInfo, opts ...grpc.CallOption) (*BaseResp, error)
+	//  group: group
+	GetGroupList(ctx context.Context, in *GroupListReq, opts ...grpc.CallOption) (*GroupListResp, error)
+	//  group: group
+	GetGroupById(ctx context.Context, in *IDReq, opts ...grpc.CallOption) (*GroupInfo, error)
+	//  group: group
+	DeleteGroup(ctx context.Context, in *IDsReq, opts ...grpc.CallOption) (*BaseResp, error)
 }
 
 type loadClient struct {
@@ -39,12 +50,68 @@ func (c *loadClient) InitDatabase(ctx context.Context, in *Empty, opts ...grpc.C
 	return out, nil
 }
 
+func (c *loadClient) CreateGroup(ctx context.Context, in *GroupInfo, opts ...grpc.CallOption) (*BaseIDResp, error) {
+	out := new(BaseIDResp)
+	err := c.cc.Invoke(ctx, "/load.Load/createGroup", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *loadClient) UpdateGroup(ctx context.Context, in *GroupInfo, opts ...grpc.CallOption) (*BaseResp, error) {
+	out := new(BaseResp)
+	err := c.cc.Invoke(ctx, "/load.Load/updateGroup", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *loadClient) GetGroupList(ctx context.Context, in *GroupListReq, opts ...grpc.CallOption) (*GroupListResp, error) {
+	out := new(GroupListResp)
+	err := c.cc.Invoke(ctx, "/load.Load/getGroupList", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *loadClient) GetGroupById(ctx context.Context, in *IDReq, opts ...grpc.CallOption) (*GroupInfo, error) {
+	out := new(GroupInfo)
+	err := c.cc.Invoke(ctx, "/load.Load/getGroupById", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *loadClient) DeleteGroup(ctx context.Context, in *IDsReq, opts ...grpc.CallOption) (*BaseResp, error) {
+	out := new(BaseResp)
+	err := c.cc.Invoke(ctx, "/load.Load/deleteGroup", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // LoadServer is the server API for Load service.
 // All implementations must embed UnimplementedLoadServer
 // for forward compatibility
 type LoadServer interface {
 	//  group: base
 	InitDatabase(context.Context, *Empty) (*BaseResp, error)
+	//  Group management
+	//  group: group
+	CreateGroup(context.Context, *GroupInfo) (*BaseIDResp, error)
+	//  group: group
+	UpdateGroup(context.Context, *GroupInfo) (*BaseResp, error)
+	//  group: group
+	GetGroupList(context.Context, *GroupListReq) (*GroupListResp, error)
+	//  group: group
+	GetGroupById(context.Context, *IDReq) (*GroupInfo, error)
+	//  group: group
+	DeleteGroup(context.Context, *IDsReq) (*BaseResp, error)
 	mustEmbedUnimplementedLoadServer()
 }
 
@@ -54,6 +121,21 @@ type UnimplementedLoadServer struct {
 
 func (UnimplementedLoadServer) InitDatabase(context.Context, *Empty) (*BaseResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method InitDatabase not implemented")
+}
+func (UnimplementedLoadServer) CreateGroup(context.Context, *GroupInfo) (*BaseIDResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateGroup not implemented")
+}
+func (UnimplementedLoadServer) UpdateGroup(context.Context, *GroupInfo) (*BaseResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateGroup not implemented")
+}
+func (UnimplementedLoadServer) GetGroupList(context.Context, *GroupListReq) (*GroupListResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetGroupList not implemented")
+}
+func (UnimplementedLoadServer) GetGroupById(context.Context, *IDReq) (*GroupInfo, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetGroupById not implemented")
+}
+func (UnimplementedLoadServer) DeleteGroup(context.Context, *IDsReq) (*BaseResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteGroup not implemented")
 }
 func (UnimplementedLoadServer) mustEmbedUnimplementedLoadServer() {}
 
@@ -86,6 +168,96 @@ func _Load_InitDatabase_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Load_CreateGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GroupInfo)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LoadServer).CreateGroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/load.Load/createGroup",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LoadServer).CreateGroup(ctx, req.(*GroupInfo))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Load_UpdateGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GroupInfo)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LoadServer).UpdateGroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/load.Load/updateGroup",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LoadServer).UpdateGroup(ctx, req.(*GroupInfo))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Load_GetGroupList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GroupListReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LoadServer).GetGroupList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/load.Load/getGroupList",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LoadServer).GetGroupList(ctx, req.(*GroupListReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Load_GetGroupById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(IDReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LoadServer).GetGroupById(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/load.Load/getGroupById",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LoadServer).GetGroupById(ctx, req.(*IDReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Load_DeleteGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(IDsReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LoadServer).DeleteGroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/load.Load/deleteGroup",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LoadServer).DeleteGroup(ctx, req.(*IDsReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Load_ServiceDesc is the grpc.ServiceDesc for Load service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -96,6 +268,26 @@ var Load_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "initDatabase",
 			Handler:    _Load_InitDatabase_Handler,
+		},
+		{
+			MethodName: "createGroup",
+			Handler:    _Load_CreateGroup_Handler,
+		},
+		{
+			MethodName: "updateGroup",
+			Handler:    _Load_UpdateGroup_Handler,
+		},
+		{
+			MethodName: "getGroupList",
+			Handler:    _Load_GetGroupList_Handler,
+		},
+		{
+			MethodName: "getGroupById",
+			Handler:    _Load_GetGroupById_Handler,
+		},
+		{
+			MethodName: "deleteGroup",
+			Handler:    _Load_DeleteGroup_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

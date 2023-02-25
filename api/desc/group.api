@@ -1,0 +1,75 @@
+import "base.api"
+
+type (
+    // The response data of Group information | 分组信息
+    GroupInfo {
+        BaseInfo
+
+        // Name | 分组名称
+        Name  string `json:"name"`
+
+        // Remark | 备注
+        Remark  string `json:"remark,optional"`
+        
+    }
+
+    // The response data of Group list | 分组列表数据
+    GroupListResp {
+        BaseDataInfo
+
+        // Group list data | 分组列表数据
+        Data GroupListInfo `json:"data"`
+    }
+
+    // Group list data | 分组列表数据
+    GroupListInfo {
+        BaseListInfo
+
+        // The API list data | 分组列表数据
+        Data  []GroupInfo  `json:"data"`
+    }
+
+    // Get Group list request params | 分组列表请求参数
+    GroupListReq {
+        PageInfo
+
+        // Name
+        Name  string `json:"name,optional"`
+    }
+
+    // Group information response | 分组信息返回体
+    GroupInfoResp {
+        BaseDataInfo
+
+        // Group information | 分组数据
+        Data GroupInfo `json:"data"`
+    }
+)
+
+@server(
+    jwt: Auth
+    group: group
+    middleware: Authority
+)
+
+service load {
+    // Create Group information | 创建分组
+    @handler createGroup
+    post /group/create (GroupInfo) returns (BaseMsgResp)
+
+    // Update Group information | 更新分组
+    @handler updateGroup
+    post /group/update (GroupInfo) returns (BaseMsgResp)
+
+    // Delete Group information | 删除分组信息
+    @handler deleteGroup
+    post /group/delete (IDsReq) returns (BaseMsgResp)
+
+    // Get Group list | 获取分组列表
+    @handler getGroupList
+    post /group/list (GroupListReq) returns (GroupListResp)
+
+    // Get Group by ID | 通过ID获取分组
+    @handler getGroupById
+    post /group (IDReq) returns (GroupInfoResp)
+}

@@ -111,3 +111,45 @@ type BaseUUIDInfo struct {
 	// Update date | 更新日期
 	UpdatedAt int64 `json:"updatedAt,optional"`
 }
+
+// The response data of Group information | 分组信息
+// swagger:model GroupInfo
+type GroupInfo struct {
+	BaseInfo
+	// Name | 分组名称
+	Name string `json:"name"`
+	// Remark | 备注
+	Remark string `json:"remark,optional"`
+}
+
+// The response data of Group list | 分组列表数据
+// swagger:model GroupListResp
+type GroupListResp struct {
+	BaseDataInfo
+	// Group list data | 分组列表数据
+	Data GroupListInfo `json:"data"`
+}
+
+// Group list data | 分组列表数据
+// swagger:model GroupListInfo
+type GroupListInfo struct {
+	BaseListInfo
+	// The API list data | 分组列表数据
+	Data []GroupInfo `json:"data"`
+}
+
+// Get Group list request params | 分组列表请求参数
+// swagger:model GroupListReq
+type GroupListReq struct {
+	PageInfo
+	// Name
+	Name string `json:"name,optional"`
+}
+
+// Group information response | 分组信息返回体
+// swagger:model GroupInfoResp
+type GroupInfoResp struct {
+	BaseDataInfo
+	// Group information | 分组数据
+	Data GroupInfo `json:"data"`
+}

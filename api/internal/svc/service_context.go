@@ -4,6 +4,8 @@ import (
 	"github.com/vwenkk/load/api/internal/config"
 	"github.com/vwenkk/load/api/internal/middleware"
 	i18n2 "github.com/vwenkk/load/pkg/i18n"
+	"github.com/vwenkk/load/rpc/loadclient"
+	"github.com/zeromicro/go-zero/zrpc"
 
 	"github.com/suyuan32/simple-admin-core/pkg/i18n"
 
@@ -17,6 +19,7 @@ type ServiceContext struct {
 	Casbin    *casbin.Enforcer
 	Authority rest.Middleware
 	Trans     *i18n.Translator
+	LoadRpc   loadclient.Load
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -33,5 +36,6 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		Config:    c,
 		Authority: middleware.NewAuthorityMiddleware(cbn, rds, trans).Handle,
 		Trans:     trans,
+		LoadRpc:   loadclient.NewLoad(zrpc.NewClientIfEnable(c.LoadRpc)),
 	}
 }

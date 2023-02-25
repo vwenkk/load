@@ -87,6 +87,111 @@ definitions:
                 x-go-name: UpdatedAt
         type: object
         x-go-package: github.com/vwenkk/load/api/internal/types
+    GroupInfo:
+        description: The response data of Group information | 分组信息
+        properties:
+            createdAt:
+                description: Create date | 创建日期
+                format: int64
+                type: integer
+                x-go-name: CreatedAt
+            id:
+                description: ID
+                format: uint64
+                type: integer
+                x-go-name: Id
+            name:
+                description: Name | 分组名称
+                type: string
+                x-go-name: Name
+            remark:
+                description: Remark | 备注
+                type: string
+                x-go-name: Remark
+            updatedAt:
+                description: Update date | 更新日期
+                format: int64
+                type: integer
+                x-go-name: UpdatedAt
+        type: object
+        x-go-package: github.com/vwenkk/load/api/internal/types
+    GroupInfoResp:
+        description: Group information response | 分组信息返回体
+        properties:
+            code:
+                description: Error code | 错误代码
+                format: int64
+                type: integer
+                x-go-name: Code
+            data:
+                $ref: '#/definitions/GroupInfo'
+                description: Data | 数据
+                type: string
+                x-go-name: Data
+            msg:
+                description: Message | 提示信息
+                type: string
+                x-go-name: Msg
+        type: object
+        x-go-package: github.com/vwenkk/load/api/internal/types
+    GroupListInfo:
+        description: Group list data | 分组列表数据
+        properties:
+            data:
+                description: The API list data | 分组列表数据
+                items:
+                    $ref: '#/definitions/GroupInfo'
+                type: array
+                x-go-name: Data
+            total:
+                description: The total number of data | 数据总数
+                format: uint64
+                type: integer
+                x-go-name: Total
+        type: object
+        x-go-package: github.com/vwenkk/load/api/internal/types
+    GroupListReq:
+        description: Get Group list request params | 分组列表请求参数
+        properties:
+            name:
+                description: Name
+                type: string
+                x-go-name: Name
+            page:
+                description: Page number | 第几页
+                format: uint64
+                type: integer
+                x-go-name: Page
+            pageSize:
+                description: Page size | 单页数据行数
+                format: uint64
+                maximum: 100000
+                type: integer
+                x-go-name: PageSize
+        required:
+            - page
+            - pageSize
+        type: object
+        x-go-package: github.com/vwenkk/load/api/internal/types
+    GroupListResp:
+        description: The response data of Group list | 分组列表数据
+        properties:
+            code:
+                description: Error code | 错误代码
+                format: int64
+                type: integer
+                x-go-name: Code
+            data:
+                $ref: '#/definitions/GroupListInfo'
+                description: Data | 数据
+                type: string
+                x-go-name: Data
+            msg:
+                description: Message | 提示信息
+                type: string
+                x-go-name: Msg
+        type: object
+        x-go-package: github.com/vwenkk/load/api/internal/types
     IDPathReq:
         description: Basic ID request | 基础ID地址参数请求
         properties:
@@ -174,6 +279,96 @@ info:
     title: load
     version: 0.0.1
 paths:
+    /group:
+        post:
+            description: Get Group by ID | 通过ID获取分组
+            operationId: GetGroupById
+            parameters:
+                - in: body
+                  name: body
+                  schema:
+                    $ref: '#/definitions/IDReq'
+                    type: object
+            responses:
+                "200":
+                    description: GroupInfoResp
+                    schema:
+                        $ref: '#/definitions/GroupInfoResp'
+            summary: Get Group by ID | 通过ID获取分组
+            tags:
+                - group
+    /group/create:
+        post:
+            description: Create Group information | 创建分组
+            operationId: CreateGroup
+            parameters:
+                - in: body
+                  name: body
+                  schema:
+                    $ref: '#/definitions/GroupInfo'
+                    type: object
+            responses:
+                "200":
+                    description: BaseMsgResp
+                    schema:
+                        $ref: '#/definitions/BaseMsgResp'
+            summary: Create Group information | 创建分组
+            tags:
+                - group
+    /group/delete:
+        post:
+            description: Delete Group information | 删除分组信息
+            operationId: DeleteGroup
+            parameters:
+                - in: body
+                  name: body
+                  schema:
+                    $ref: '#/definitions/IDsReq'
+                    type: object
+            responses:
+                "200":
+                    description: BaseMsgResp
+                    schema:
+                        $ref: '#/definitions/BaseMsgResp'
+            summary: Delete Group information | 删除分组信息
+            tags:
+                - group
+    /group/list:
+        post:
+            description: Get Group list | 获取分组列表
+            operationId: GetGroupList
+            parameters:
+                - in: body
+                  name: body
+                  schema:
+                    $ref: '#/definitions/GroupListReq'
+                    type: object
+            responses:
+                "200":
+                    description: GroupListResp
+                    schema:
+                        $ref: '#/definitions/GroupListResp'
+            summary: Get Group list | 获取分组列表
+            tags:
+                - group
+    /group/update:
+        post:
+            description: Update Group information | 更新分组
+            operationId: UpdateGroup
+            parameters:
+                - in: body
+                  name: body
+                  schema:
+                    $ref: '#/definitions/GroupInfo'
+                    type: object
+            responses:
+                "200":
+                    description: BaseMsgResp
+                    schema:
+                        $ref: '#/definitions/BaseMsgResp'
+            summary: Update Group information | 更新分组
+            tags:
+                - group
     /init/database:
         get:
             description: Initialize database | 初始化数据库
