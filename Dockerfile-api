@@ -1,0 +1,22 @@
+FROM golang:1.19.1-alpine3.16 as builder
+
+WORKDIR /home
+COPY . .
+
+RUN go env -w GO111MODULE=on \
+    && go env -w GOPROXY=https://goproxy.cn,direct \
+    && go env -w CGO_ENABLED=0 \
+    && go env \
+    && go mod tidy \
+    && cd api \
+    && go build -ldflags="-s -w" -o /home/api/load_api load.go
+
+FROM alpine:latest
+
+WORKDIR /home
+
+COPY --from=builder /home/api/load_api ./
+COPY --from=builder /home/api/etc/load.yaml ./
+
+EXPOSE 9100
+ENTRYPOINT ./load_api -f load.yaml
