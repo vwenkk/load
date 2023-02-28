@@ -8,7 +8,7 @@ import (
 	"entgo.io/ent/schema/mixin"
 	uuid "github.com/gofrs/uuid/v5"
 
-	uuid2 "github.com/suyuan32/simple-admin-core/pkg/uuidx"
+	uuid2 "github.com/vwenkk/load/pkg/uuidx"
 )
 
 // UUIDMixin implements the ent.Mixin for sharing

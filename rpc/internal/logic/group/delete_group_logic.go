@@ -2,6 +2,11 @@ package group
 
 import (
 	"context"
+	"github.com/vwenkk/load/pkg/ent"
+	"github.com/vwenkk/load/pkg/ent/group"
+	"github.com/vwenkk/load/pkg/i18n"
+	"github.com/vwenkk/load/pkg/msg/logmsg"
+	"github.com/vwenkk/load/pkg/statuserr"
 
 	"github.com/vwenkk/load/rpc/internal/svc"
 	"github.com/vwenkk/load/rpc/types/load"
@@ -24,7 +29,19 @@ func NewDeleteGroupLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Delet
 }
 
 func (l *DeleteGroupLogic) DeleteGroup(in *load.IDsReq) (*load.BaseResp, error) {
-	// todo: add your logic here and delete this line
 
-	return &load.BaseResp{}, nil
+	_, err := l.svcCtx.DB.Group.Delete().Where(group.IDIn(in.Ids...)).Exec(l.ctx)
+	if err != nil {
+		switch {
+		case ent.IsNotFound(err):
+			logx.Errorw(err.Error(), logx.Field("detail", in))
+			return nil, statuserr.NewInvalidArgumentError(i18n.TargetNotFound)
+		default:
+			logx.Errorw(logmsg.DatabaseError, logx.Field("detail", err.Error()))
+			return nil, statuserr.NewInternalError(i18n.DatabaseError)
+		}
+	}
+
+	return &load.BaseResp{Msg: i18n.DeleteSuccess}, nil
+
 }

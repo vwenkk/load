@@ -1,7 +1,7 @@
 Name: load.api
 Host: 0.0.0.0
 Port: 8081
-Timeout: 30000
+Timeout: 3000000
 
 Auth:
   AccessSecret: jS6VKDtsJf3z1n2VKDtsJf3z1n2

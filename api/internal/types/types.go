@@ -41,12 +41,12 @@ type SimpleMsg struct {
 // swagger:model PageInfo
 type PageInfo struct {
 	// Page number | 第几页
-	// Required: true
-	Page uint64 `json:"page" validate:"number"`
+	// Required: false
+	Page uint64 `json:"page,optional,default=1" validate:"number"`
 	// Page size | 单页数据行数
-	// Required: true
+	// Required: false
 	// Maximum: 100000
-	PageSize uint64 `json:"pageSize" validate:"number,max=100000"`
+	PageSize uint64 `json:"pageSize,optional,default=10" validate:"number,max=100000"`
 }
 
 // Basic ID request | 基础ID参数请求

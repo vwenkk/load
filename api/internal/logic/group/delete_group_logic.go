@@ -2,6 +2,7 @@ package group
 
 import (
 	"context"
+	"github.com/vwenkk/load/rpc/loadclient"
 	"net/http"
 
 	"github.com/vwenkk/load/api/internal/svc"
@@ -27,7 +28,12 @@ func NewDeleteGroupLogic(r *http.Request, svcCtx *svc.ServiceContext) *DeleteGro
 }
 
 func (l *DeleteGroupLogic) DeleteGroup(req *types.IDsReq) (resp *types.BaseMsgResp, err error) {
-	// todo: add your logic here and delete this line
+	result, err := l.svcCtx.LoadRpc.DeleteGroup(l.ctx, &loadclient.IDsReq{
+		Ids: req.Ids,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return &types.BaseMsgResp{Msg: l.svcCtx.Trans.Trans(l.lang, result.Msg)}, nil
 
-	return
 }

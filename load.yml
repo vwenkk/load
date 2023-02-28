@@ -168,9 +168,6 @@ definitions:
                 maximum: 100000
                 type: integer
                 x-go-name: PageSize
-        required:
-            - page
-            - pageSize
         type: object
         x-go-package: github.com/vwenkk/load/api/internal/types
     GroupListResp:
@@ -243,9 +240,6 @@ definitions:
                 maximum: 100000
                 type: integer
                 x-go-name: PageSize
-        required:
-            - page
-            - pageSize
         type: object
         x-go-package: github.com/vwenkk/load/api/internal/types
     UUIDReq:

@@ -2,6 +2,7 @@ package group
 
 import (
 	"context"
+	"github.com/vwenkk/load/rpc/loadclient"
 	"net/http"
 
 	"github.com/vwenkk/load/api/internal/svc"
@@ -27,7 +28,14 @@ func NewCreateGroupLogic(r *http.Request, svcCtx *svc.ServiceContext) *CreateGro
 }
 
 func (l *CreateGroupLogic) CreateGroup(req *types.GroupInfo) (resp *types.BaseMsgResp, err error) {
-	// todo: add your logic here and delete this line
-
-	return
+	data, err := l.svcCtx.LoadRpc.CreateGroup(l.ctx,
+		&loadclient.GroupInfo{
+			Id:     req.Id,
+			Name:   req.Name,
+			Remark: req.Remark,
+		})
+	if err != nil {
+		return nil, err
+	}
+	return &types.BaseMsgResp{Msg: l.svcCtx.Trans.Trans(l.lang, data.Msg)}, nil
 }

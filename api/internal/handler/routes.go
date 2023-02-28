@@ -23,36 +23,33 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 	)
 
 	server.AddRoutes(
-		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.Authority},
-			[]rest.Route{
-				{
-					Method:  http.MethodPost,
-					Path:    "/group/create",
-					Handler: group.CreateGroupHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/group/update",
-					Handler: group.UpdateGroupHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/group/delete",
-					Handler: group.DeleteGroupHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/group/list",
-					Handler: group.GetGroupListHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/group",
-					Handler: group.GetGroupByIdHandler(serverCtx),
-				},
-			}...,
-		),
-		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
+
+		[]rest.Route{
+			{
+				Method:  http.MethodPost,
+				Path:    "/group/create",
+				Handler: group.CreateGroupHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPut,
+				Path:    "/group/update",
+				Handler: group.UpdateGroupHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodDelete,
+				Path:    "/group/delete",
+				Handler: group.DeleteGroupHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/group/list",
+				Handler: group.GetGroupListHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/group",
+				Handler: group.GetGroupByIdHandler(serverCtx),
+			},
+		},
 	)
 }

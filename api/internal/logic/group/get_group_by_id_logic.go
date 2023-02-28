@@ -2,6 +2,8 @@ package group
 
 import (
 	"context"
+	"github.com/vwenkk/load/pkg/i18n"
+	"github.com/vwenkk/load/rpc/loadclient"
 	"net/http"
 
 	"github.com/vwenkk/load/api/internal/svc"
@@ -27,7 +29,24 @@ func NewGetGroupByIdLogic(r *http.Request, svcCtx *svc.ServiceContext) *GetGroup
 }
 
 func (l *GetGroupByIdLogic) GetGroupById(req *types.IDReq) (resp *types.GroupInfoResp, err error) {
-	// todo: add your logic here and delete this line
-
-	return
+	data, err := l.svcCtx.LoadRpc.GetGroupById(l.ctx, &loadclient.IDReq{
+		Id: req.Id,
+	})
+	if err != nil {
+		return nil, err
+	}
+	resp = &types.GroupInfoResp{BaseDataInfo: types.BaseDataInfo{
+		Code: 0,
+		Msg:  l.svcCtx.Trans.Trans(l.lang, i18n.Success),
+	}}
+	resp.Data = types.GroupInfo{
+		BaseInfo: types.BaseInfo{
+			Id:        data.GetId(),
+			CreatedAt: data.GetCreatedAt(),
+			UpdatedAt: data.GetUpdatedAt(),
+		},
+		Name:   data.GetName(),
+		Remark: data.GetRemark(),
+	}
+	return resp, nil
 }

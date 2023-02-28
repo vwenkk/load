@@ -7,7 +7,7 @@ import (
 	"github.com/vwenkk/load/rpc/loadclient"
 	"github.com/zeromicro/go-zero/zrpc"
 
-	"github.com/suyuan32/simple-admin-core/pkg/i18n"
+	"github.com/vwenkk/load/pkg/i18n"
 
 	"github.com/casbin/casbin/v2"
 	"github.com/zeromicro/go-zero/core/stores/redis"
@@ -20,6 +20,7 @@ type ServiceContext struct {
 	Authority rest.Middleware
 	Trans     *i18n.Translator
 	LoadRpc   loadclient.Load
+	Redis     *redis.Redis
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -37,5 +38,6 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		Authority: middleware.NewAuthorityMiddleware(cbn, rds, trans).Handle,
 		Trans:     trans,
 		LoadRpc:   loadclient.NewLoad(zrpc.NewClientIfEnable(c.LoadRpc)),
+		Redis:     rds,
 	}
 }

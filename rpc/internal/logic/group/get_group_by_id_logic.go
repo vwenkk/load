@@ -2,7 +2,7 @@ package group
 
 import (
 	"context"
-
+	"github.com/vwenkk/load/pkg/statuserr"
 	"github.com/vwenkk/load/rpc/internal/svc"
 	"github.com/vwenkk/load/rpc/types/load"
 
@@ -24,7 +24,16 @@ func NewGetGroupByIdLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetG
 }
 
 func (l *GetGroupByIdLogic) GetGroupById(in *load.IDReq) (*load.GroupInfo, error) {
-	// todo: add your logic here and delete this line
-
-	return &load.GroupInfo{}, nil
+	result, err := l.svcCtx.DB.Group.Get(l.ctx, in.GetId())
+	if err != nil {
+		return nil, statuserr.Wrap(err, in)
+	}
+	return &load.GroupInfo{
+		Id:        result.ID,
+		CreatedAt: result.CreatedAt.Unix(),
+		UpdatedAt: result.UpdatedAt.Unix(),
+		Status:    uint32(result.Status),
+		Name:      result.Name,
+		Remark:    result.Remark,
+	}, nil
 }

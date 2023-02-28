@@ -47,9 +47,9 @@ type (
 )
 
 @server(
-    jwt: Auth
+    // jwt: Auth
     group: group
-    middleware: Authority
+    // middleware: Authority
 )
 
 service load {
@@ -59,17 +59,17 @@ service load {
 
     // Update Group information | 更新分组
     @handler updateGroup
-    post /group/update (GroupInfo) returns (BaseMsgResp)
+    put /group/update (GroupInfo) returns (BaseMsgResp)
 
     // Delete Group information | 删除分组信息
     @handler deleteGroup
-    post /group/delete (IDsReq) returns (BaseMsgResp)
+    delete /group/delete (IDsReq) returns (BaseMsgResp)
 
     // Get Group list | 获取分组列表
     @handler getGroupList
-    post /group/list (GroupListReq) returns (GroupListResp)
+    get /group/list (GroupListReq) returns (GroupListResp)
 
     // Get Group by ID | 通过ID获取分组
     @handler getGroupById
-    post /group (IDReq) returns (GroupInfoResp)
+    get /group (IDReq) returns (GroupInfoResp)
 }

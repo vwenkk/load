@@ -2,6 +2,10 @@ package group
 
 import (
 	"context"
+	"github.com/vwenkk/load/pkg/ent"
+	"github.com/vwenkk/load/pkg/i18n"
+	"github.com/vwenkk/load/pkg/msg/logmsg"
+	"github.com/vwenkk/load/pkg/statuserr"
 
 	"github.com/vwenkk/load/rpc/internal/svc"
 	"github.com/vwenkk/load/rpc/types/load"
@@ -24,7 +28,25 @@ func NewUpdateGroupLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Updat
 }
 
 func (l *UpdateGroupLogic) UpdateGroup(in *load.GroupInfo) (*load.BaseResp, error) {
-	// todo: add your logic here and delete this line
+	err := l.svcCtx.DB.Group.UpdateOneID(in.Id).
+		SetNotEmptyStatus(uint8(in.Status)).
+		SetNotEmptyName(in.Name).
+		SetNotEmptyRemark(in.Remark).
+		Exec(l.ctx)
+	if err != nil {
+		switch {
+		case ent.IsNotFound(err):
+			logx.Errorw(err.Error(), logx.Field("detail", in))
+			return nil, statuserr.NewInvalidArgumentError(i18n.TargetNotFound)
+		case ent.IsConstraintError(err):
+			logx.Errorw(err.Error(), logx.Field("detail", in))
+			return nil, statuserr.NewInvalidArgumentError(i18n.UpdateFailed)
+		default:
+			logx.Errorw(logmsg.DatabaseError, logx.Field("detail", err.Error()))
+			return nil, statuserr.NewInternalError(i18n.DatabaseError)
+		}
+	}
 
-	return &load.BaseResp{}, nil
+	return &load.BaseResp{Msg: i18n.UpdateSuccess}, nil
+
 }

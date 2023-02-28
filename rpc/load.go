@@ -3,12 +3,10 @@ package main
 import (
 	"flag"
 	"fmt"
-
 	"github.com/vwenkk/load/rpc/internal/config"
 	"github.com/vwenkk/load/rpc/internal/server"
 	"github.com/vwenkk/load/rpc/internal/svc"
 	"github.com/vwenkk/load/rpc/types/load"
-
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/core/service"
 	"github.com/zeromicro/go-zero/zrpc"

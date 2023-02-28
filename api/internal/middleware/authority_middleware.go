@@ -10,8 +10,8 @@ import (
 	"github.com/zeromicro/go-zero/core/stores/redis"
 	"github.com/zeromicro/go-zero/rest/httpx"
 
-	"github.com/suyuan32/simple-admin-core/pkg/enum"
-	"github.com/suyuan32/simple-admin-core/pkg/i18n"
+	"github.com/vwenkk/load/pkg/enum"
+	"github.com/vwenkk/load/pkg/i18n"
 )
 
 type AuthorityMiddleware struct {

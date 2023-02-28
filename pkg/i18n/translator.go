@@ -12,8 +12,8 @@ import (
 	"golang.org/x/text/language"
 	"google.golang.org/grpc/status"
 
-	"github.com/suyuan32/simple-admin-core/pkg/utils"
-	"github.com/suyuan32/simple-admin-core/pkg/utils/errcode"
+	"github.com/vwenkk/load/pkg/utils"
+	"github.com/vwenkk/load/pkg/utils/errcode"
 )
 
 //go:embed locale/*.json
